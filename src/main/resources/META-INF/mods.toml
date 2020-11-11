@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[34,)"
+license="All rights reserved"
+
+issueTrackerURL="http://my.issue.tracker/" #TODO
+
+[[mods]]
+    modId="manaliquidizer"
+    version="${file.jarVersion}"
+    displayName="Mana Liquidizer"
+    # updateJSONURL="http://myurl.me/"
+    # displayURL="http://example.com/"
+    logoFile="logo.png"
+    credits="Vazkii for making Botania!"
+    authors="MostafaSabry55"
+    description='''This mod allows you to exchange mana into liquid mana and vice-versa!'''
+
+[[dependencies.manaliquidizer]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.manaliquidizer]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.3,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.manaliquidizer]]
+    modId="botania"
+    mandatory=true
+    versionRange="[1.16.3-409,)"
+    side="BOTH"

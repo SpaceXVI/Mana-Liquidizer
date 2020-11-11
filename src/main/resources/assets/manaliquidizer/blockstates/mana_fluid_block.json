@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "manaliquidizer:block/mana_fluid" }
+  }
+}
