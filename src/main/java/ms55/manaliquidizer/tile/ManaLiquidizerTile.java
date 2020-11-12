@@ -3,20 +3,24 @@ package ms55.manaliquidizer.tile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import ms55.manaliquidizer.container.ManaLiquidizerContainer;
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import ms55.manaliquidizer.fluid.ModFluids;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.DyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -26,20 +30,24 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.IManaPool;
 import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.ManaNetworkEvent;
+import vazkii.botania.client.core.handler.HUDHandler;
 import vazkii.botania.common.block.tile.TileMod;
 import vazkii.botania.common.core.handler.ManaNetworkHandler;
+import vazkii.botania.common.item.ItemManaTablet;
+import vazkii.botania.common.item.ModItems;
 
-public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool, IManaReceiver, INamedContainerProvider, ITickableTileEntity {
+public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool, IManaReceiver, ITickableTileEntity {
 	private int mana;
 	private int maxMana = 10000;
 
 	private Mode mode = Mode.TO_MANA_FLUID;
 
-    protected FluidTank tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 10);
+    protected FluidTank tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 10, (fluid) -> fluid.getFluid().isEquivalentTo(ModFluids.MANA_FLUID.get()));
 
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
@@ -64,7 +72,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
 	public ManaLiquidizerTile() {
 		super(ModTiles.MANA_LIQUIDIZER.get());
-		
 		this.onChunkUnloaded();
 	}
 
@@ -176,20 +183,56 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		return !isFull() && mode == Mode.TO_MANA_FLUID;
 	}
 
-	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void renderHUD(MatrixStack ms, Minecraft mc) {
+		ItemStack bucket = new ItemStack(ModFluids.MANA_FLUID_BUCKET.get());
+
+		ItemStack tablet = new ItemStack(ModItems.manaTablet);
+		ItemManaTablet.setStackCreative(tablet);
+
+		int color = 0x4444FF;
+		int color2 = 0x1644ff;
+
+		if (mode == Mode.TO_MANA) {
+			BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, getCurrentMana(), maxMana, "Mana");
+		} else {
+			BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color2, getCurrentFluidMana(), tank.getCapacity(), "Mana Fluid");
+		}
+
+		int x = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 11;
+		int y = Minecraft.getInstance().getMainWindow().getScaledHeight() / 2 + 30;
+
+		int u = mode == Mode.TO_MANA ? 22 : 0;
+		int v = 38;
+
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		mc.textureManager.bindTexture(HUDHandler.manaBar);
+		mc.ingameGUI.blit(ms, x, y, u, v, 22, 15);
+		RenderSystem.color4f(1F, 1F, 1F, 1F);
+
+		mc.getItemRenderer().renderItemAndEffectIntoGUI(tablet, x - 20, y);
+		mc.getItemRenderer().renderItemAndEffectIntoGUI(bucket, x + 26, y);
+
+		RenderSystem.disableLighting();
+		RenderSystem.disableBlend();
+	}
+
+	/*@Override
 	public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity player) {
 		return ManaLiquidizerContainer.create(windowId, playerInventory, this, data);
-	}
+	}*/
 
 	public boolean isUsableByPlayer(PlayerEntity player) {
         BlockPos pos = this.getPos();
         return player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
     }
 
-	@Override
+	/*@Override
 	public ITextComponent getDisplayName() {
 		return (ITextComponent) new TranslationTextComponent("container.mana_liquidizer");
-	}
+	}*/
 
 	public static enum Mode {
 		TO_MANA_FLUID("To Mana Fluid"),

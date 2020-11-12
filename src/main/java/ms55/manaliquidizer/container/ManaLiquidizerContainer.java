@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
 
 public class ManaLiquidizerContainer extends Container {
@@ -36,6 +37,31 @@ public class ManaLiquidizerContainer extends Container {
 	public boolean canInteractWith(PlayerEntity player) {
 		return this.tile.isUsableByPlayer(player);
 	}
+
+	@Override
+	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+	      ItemStack itemstack = ItemStack.EMPTY;
+	      Slot slot = this.inventorySlots.get(index);
+	      if (slot != null && slot.getHasStack()) {
+	         ItemStack itemstack1 = slot.getStack();
+	         itemstack = itemstack1.copy();
+	         if (index < player.container.getSize()) {
+	            if (!this.mergeItemStack(itemstack1, player.container.getSize(), this.inventorySlots.size(), true)) {
+	               return ItemStack.EMPTY;
+	            }
+	         } else if (!this.mergeItemStack(itemstack1, 0, player.container.getSize(), false)) {
+	            return ItemStack.EMPTY;
+	         }
+
+	         if (itemstack1.isEmpty()) {
+	            slot.putStack(ItemStack.EMPTY);
+	         } else {
+	            slot.onSlotChanged();
+	         }
+	      }
+
+	      return itemstack;
+	   }
 
     public int getCurrentMana() {
 		return this.data.get(0);

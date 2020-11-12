@@ -4,11 +4,11 @@ import ms55.manaliquidizer.ManaLiquidizer;
 import ms55.manaliquidizer.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -39,10 +39,10 @@ public class ModFluids {
     	new ForgeFlowingFluid.Flowing(makeProperties()));
 	
 	public static RegistryObject<FlowingFluidBlock> MANA_FLUID_BLOCK = ModBlocks.BLOCKS.register("mana_fluid_block", () ->
-     	new FlowingFluidBlock(MANA_FLUID, Block.Properties.create(net.minecraft.block.material.Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
+     	new FlowingFluidBlock(MANA_FLUID, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops()));
 	 
 	public static RegistryObject<Item> MANA_FLUID_BUCKET = ITEMS.register("mana_fluid_bucket", () ->
-     	new BucketItem(MANA_FLUID, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ItemGroup.MISC)));
+     	new BucketItem(MANA_FLUID, new Item.Properties().containerItem(Items.BUCKET).maxStackSize(1).group(ManaLiquidizer.ITEM_GROUP)));
 
 	public static void registerFluids() {
 		FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());

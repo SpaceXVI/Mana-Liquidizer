@@ -2,8 +2,11 @@ package ms55.manaliquidizer.block;
 
 import javax.annotation.Nonnull;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import ms55.manaliquidizer.tile.ManaLiquidizerTile;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,11 +17,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidUtil;
+import vazkii.botania.api.wand.IWandHUD;
 import vazkii.botania.api.wand.IWandable;
 import vazkii.botania.common.block.BlockMod;
 
-public class ManaLiquidizerBlock extends BlockMod implements IWandable {
+public class ManaLiquidizerBlock extends BlockMod implements IWandable, IWandHUD {
 
 	public ManaLiquidizerBlock(Properties properties) {
 		super(properties);
@@ -46,14 +52,20 @@ public class ManaLiquidizerBlock extends BlockMod implements IWandable {
 		            if (!stack.isEmpty() && FluidUtil.interactWithFluidHandler(player, hand, ((ManaLiquidizerTile) tile).getTank())) {
 		                player.inventory.markDirty();
 		                return ActionResultType.SUCCESS;
-		            } else {
+		            }/* else {
 						player.openContainer((ManaLiquidizerTile) tile);
-		            }
+		            }*/
 		        }
 			}
 		}
 
 		return ActionResultType.SUCCESS;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void renderHUD(MatrixStack ms, Minecraft mc, World world, BlockPos pos) {
+		((ManaLiquidizerTile) world.getTileEntity(pos)).renderHUD(ms, mc);
 	}
 
 	@Override
