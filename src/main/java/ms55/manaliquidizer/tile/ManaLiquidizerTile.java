@@ -51,25 +51,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
-    protected IIntArray data = new IIntArray() {
-		@Override
-		public int get(int i) {
-			switch (i) {
-				case 0: return ManaLiquidizerTile.this.getCurrentMana();
-				case 1: return ManaLiquidizerTile.this.getCurrentFluidMana();
-				default: return 0;
-			}
-		}
-
-		@Override
-		public void set(int i, int value) { }
-
-		@Override
-		public int size() {
-			return 2;
-		}
-	};
-
 	public ManaLiquidizerTile() {
 		super(ModTiles.MANA_LIQUIDIZER.get());
 		this.onChunkUnloaded();
@@ -121,6 +102,7 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		super.writePacketNBT(tag);
 
 		tag.putInt("mana", mana);
+		tag.putString("mode", mode.text);
 
 	    tank.writeToNBT(tag);
 	}
@@ -130,6 +112,7 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		super.readPacketNBT(tag);
 
 		mana = tag.getInt("mana");
+		mode = tag.getString("mode") == Mode.TO_MANA_FLUID.text ? Mode.TO_MANA_FLUID : Mode.TO_MANA;
 
 		tank.readFromNBT(tag);
 	}
