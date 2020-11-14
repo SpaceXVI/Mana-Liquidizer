@@ -51,6 +51,7 @@ public class ManaLiquidizerBlock extends BlockMod implements IWandable, IWandHUD
 					ItemStack stack = player.getHeldItem(hand);
 		            if (!stack.isEmpty() && FluidUtil.interactWithFluidHandler(player, hand, ((ManaLiquidizerTile) tile).getTank())) {
 		                player.inventory.markDirty();
+		                world.notifyBlockUpdate(tile.getPos(), tile.getBlockState(), tile.getBlockState(), 2);
 		                return ActionResultType.SUCCESS;
 		            }/* else {
 						player.openContainer((ManaLiquidizerTile) tile);

@@ -17,8 +17,6 @@ public class ManaLiquidizer {
 	public ManaLiquidizer() {
         MinecraftForge.EVENT_BUS.register(this);
 
-        //ModLoadingContext.get().registerConfig(Type.COMMON, ManaLiquidizer.COMMON_SPEC, "manaliquidizer.toml");
-
         ModBlocks.registerBlocks();
         //ModContainers.registerContainers(); //Not needed anymore, but kept there as I might need it for other projects!
         ModFluids.registerFluids();

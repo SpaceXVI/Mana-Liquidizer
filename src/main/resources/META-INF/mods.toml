@@ -13,7 +13,7 @@ issueTrackerURL="http://my.issue.tracker/" #TODO
     logoFile="logo.png"
     credits="Vazkii for making Botania!"
     authors="MostafaSabry55"
-    description='''This mod allows you to exchange mana into liquid mana and vice-versa!'''
+    description='''This mod allows you to exchange mana into mana fluid and vice-versa!'''
 
 [[dependencies.manaliquidizer]]
     modId="forge"

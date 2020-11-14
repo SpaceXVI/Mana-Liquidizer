@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,7 +52,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
 	public ManaLiquidizerTile() {
 		super(ModTiles.MANA_LIQUIDIZER.get());
-		this.onChunkUnloaded();
 	}
 
 	@Override
@@ -158,12 +156,12 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 	public void receiveMana(int mana) {
 		this.mana = Math.min(this.mana + mana, maxMana);
 		markDirty();
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+		//world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
 	public boolean canReceiveManaFromBursts() {
-		return !isFull() && mode == Mode.TO_MANA_FLUID;
+		return !isFull();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -179,7 +177,7 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		if (mode == Mode.TO_MANA) {
 			BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, getCurrentMana(), maxMana, "Mana");
 		} else {
-			BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color2, getCurrentFluidMana(), tank.getCapacity(), "Mana Fluid");
+			BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color2, tank.getFluidAmount(), tank.getCapacity(), "Mana Fluid");
 		}
 
 		int x = Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 11;
@@ -266,9 +264,11 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		if (tank.getCapacity() - tank.getFluidAmount() != 0) {
 			if ((tank.getCapacity() - tank.getFluidAmount()) > resource.getAmount()) {
 				//2000 available - 1000 fluid = 1000
+				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 				return (tank.getCapacity() - tank.getFluidAmount()) - resource.getAmount();
 			} else {
 				//2000 fluid - 1000 available = 1000
+				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 				return resource.getAmount() - (tank.getCapacity() - tank.getFluidAmount());
 			}
 		}
