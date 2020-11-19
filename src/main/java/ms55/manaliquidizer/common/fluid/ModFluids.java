@@ -1,7 +1,7 @@
-package ms55.manaliquidizer.fluid;
+package ms55.manaliquidizer.common.fluid;
 
 import ms55.manaliquidizer.ManaLiquidizer;
-import ms55.manaliquidizer.block.ModBlocks;
+import ms55.manaliquidizer.common.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
@@ -28,7 +28,7 @@ public class ModFluids {
 
 	private static ForgeFlowingFluid.Properties makeProperties() {
         return new ForgeFlowingFluid.Properties(MANA_FLUID, MANA_FLUID_FLOWING,
-        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).overlay(FLUID_OVERLAY).color(0x3F1080FF))
+        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).overlay(FLUID_OVERLAY).color(0xFF1080FF))
             .bucket(MANA_FLUID_BUCKET).block(MANA_FLUID_BLOCK);
     }
 

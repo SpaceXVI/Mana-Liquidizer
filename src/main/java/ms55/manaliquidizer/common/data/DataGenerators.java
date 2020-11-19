@@ -1,4 +1,4 @@
-package ms55.manaliquidizer.data;
+package ms55.manaliquidizer.common.data;
 
 import ms55.manaliquidizer.ManaLiquidizer;
 import net.minecraft.data.DataGenerator;

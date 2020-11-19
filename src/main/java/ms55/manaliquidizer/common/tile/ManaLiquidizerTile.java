@@ -1,4 +1,4 @@
-package ms55.manaliquidizer.tile;
+package ms55.manaliquidizer.common.tile;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -8,7 +8,8 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import ms55.manaliquidizer.fluid.ModFluids;
+import ms55.manaliquidizer.client.config.Config;
+import ms55.manaliquidizer.common.fluid.ModFluids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
@@ -50,6 +51,8 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
+    private final double ratio = Config.GENERAL.ANTECEDENT.get() / Config.GENERAL.CONSEQUENT.get();
+
 	public ManaLiquidizerTile() {
 		super(ModTiles.MANA_LIQUIDIZER.get());
 	}
@@ -60,24 +63,32 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 			ManaNetworkEvent.addPool(this);
 		}
 
+		// Mana is the antecedent and Fluid is the consequent
+		// So if the ratio is 3 : 5, then 3000 mana * (3/5)
+		// So fluid to mana = fluid / (5/3) = fluid * (5/3)
 		if (mode == Mode.TO_MANA_FLUID) {
 			if (mana > 0 && !(tank.getFluidAmount() >= tank.getCapacity())) {
-				//5000 mana fluid / 1000 mana, 6000
-				//1000 - 5000 - 4000
+				//5600 mana = 5600 * (3/5) = 3360 fluid
+				//This is a float only due to ints not containing decimals
+				double amount = mana * ratio;
+				System.out.println(amount);
 				if (tank.getFluid().isEmpty()) {
-					tank.setFluid(new FluidStack(ModFluids.MANA_FLUID.get().getFluid(), Math.min(mana, maxMana)));
+					tank.setFluid(new FluidStack(ModFluids.MANA_FLUID.get().getFluid(), Math.min((int) amount, maxMana)));
 				} else {
-					tank.getFluid().setAmount(Math.min(tank.getFluidAmount() + mana, maxMana));
+					tank.getFluid().setAmount(Math.min(tank.getFluidAmount() + (int) amount, maxMana));
 				}
-				mana = Math.max(mana - tank.getFluidAmount(), 0); //Also the same as making mana = 0
+				//Let's say you only gained 600 fluid from 1000 mana, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
+				mana = Math.max(mana - tank.getFluidAmount(), 0);
 				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 			}
 		} else {
 			if (tank.getFluidAmount() > 0 && !(mana >= maxMana)) {
-				//5000 mana / 1000 mana fluid, 6000
-				//1000 - 5000 - 4000
-				mana = Math.min(mana + tank.getFluid().getAmount(), maxMana);
-				tank.getFluid().setAmount(Math.max(tank.getFluidAmount() - mana, 0)); //Also the same as making manaFluid = 0
+				//3360 fluid = 5600 * (5/3) = 5600 mana
+				double amount = tank.getFluid().getAmount() * ratio;
+				System.out.println(amount);
+				mana = Math.min(mana + (int) amount, maxMana);
+				//Let's say you only gained 600 mana from 1000 fluid, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
+				tank.getFluid().setAmount(Math.max(tank.getFluidAmount() - mana, 0));
 				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 			}
 		}
@@ -156,7 +167,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 	public void receiveMana(int mana) {
 		this.mana = Math.min(this.mana + mana, maxMana);
 		markDirty();
-		//world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override

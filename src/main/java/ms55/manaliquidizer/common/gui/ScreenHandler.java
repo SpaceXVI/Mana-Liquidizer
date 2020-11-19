@@ -1,4 +1,4 @@
-package ms55.manaliquidizer.gui;
+package ms55.manaliquidizer.common.gui;
 
 /*@EventBusSubscriber(modid = ManaLiquidizer.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ScreenHandler {

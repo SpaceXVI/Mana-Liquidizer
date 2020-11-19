@@ -1,10 +1,10 @@
-package ms55.manaliquidizer.block;
+package ms55.manaliquidizer.common.block;
 
 import javax.annotation.Nonnull;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import ms55.manaliquidizer.tile.ManaLiquidizerTile;
+import ms55.manaliquidizer.common.tile.ManaLiquidizerTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,7 +1,7 @@
-package ms55.manaliquidizer.container;
+package ms55.manaliquidizer.common.container;
 
 import ms55.manaliquidizer.ManaLiquidizer;
-import ms55.manaliquidizer.tile.ModTiles;
+import ms55.manaliquidizer.common.tile.ModTiles;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.IntArray;
 import net.minecraftforge.common.extensions.IForgeContainerType;

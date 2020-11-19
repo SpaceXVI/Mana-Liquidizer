@@ -1,4 +1,4 @@
-package ms55.manaliquidizer.tags;
+package ms55.manaliquidizer.common.tags;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.FluidTags;

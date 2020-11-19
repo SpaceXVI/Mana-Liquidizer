@@ -1,4 +1,4 @@
-package ms55.manaliquidizer.block;
+package ms55.manaliquidizer.common.block;
 
 import ms55.manaliquidizer.ManaLiquidizer;
 import net.minecraft.block.Block;

@@ -1,10 +1,10 @@
-package ms55.manaliquidizer.gui;
+package ms55.manaliquidizer.common.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import ms55.manaliquidizer.ManaLiquidizer;
-import ms55.manaliquidizer.container.ManaLiquidizerContainer;
+import ms55.manaliquidizer.common.container.ManaLiquidizerContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

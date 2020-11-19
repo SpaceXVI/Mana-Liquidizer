@@ -1,7 +1,7 @@
-package ms55.manaliquidizer.tile;
+package ms55.manaliquidizer.common.tile;
 
 import ms55.manaliquidizer.ManaLiquidizer;
-import ms55.manaliquidizer.block.ModBlocks;
+import ms55.manaliquidizer.common.block.ModBlocks;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

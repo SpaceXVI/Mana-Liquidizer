@@ -1,6 +1,6 @@
-package ms55.manaliquidizer.container;
+package ms55.manaliquidizer.common.container;
 
-import ms55.manaliquidizer.tile.ManaLiquidizerTile;
+import ms55.manaliquidizer.common.tile.ManaLiquidizerTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
