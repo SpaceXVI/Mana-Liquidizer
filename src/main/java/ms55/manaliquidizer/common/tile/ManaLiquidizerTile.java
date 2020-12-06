@@ -121,7 +121,7 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		super.readPacketNBT(tag);
 
 		mana = tag.getInt("mana");
-		mode = tag.getString("mode") == Mode.TO_MANA_FLUID.text ? Mode.TO_MANA_FLUID : Mode.TO_MANA;
+		mode = tag.getString("mode").equalsIgnoreCase(Mode.TO_MANA_FLUID.text) ? Mode.TO_MANA_FLUID : Mode.TO_MANA;
 
 		tank.readFromNBT(tag);
 	}
