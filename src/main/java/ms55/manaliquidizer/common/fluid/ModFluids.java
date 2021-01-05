@@ -28,7 +28,7 @@ public class ModFluids {
 
 	private static ForgeFlowingFluid.Properties makeProperties() {
         return new ForgeFlowingFluid.Properties(MANA_FLUID, MANA_FLUID_FLOWING,
-        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).overlay(FLUID_OVERLAY).color(0xFF1080FF))
+        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).overlay(FLUID_OVERLAY).color(0xFF4BD5F2))
             .bucket(MANA_FLUID_BUCKET).block(MANA_FLUID_BLOCK);
     }
 
