@@ -53,9 +53,7 @@ public class ManaLiquidizerBlock extends BlockMod implements IWandable, IWandHUD
 		                player.inventory.markDirty();
 		                world.notifyBlockUpdate(tile.getPos(), tile.getBlockState(), tile.getBlockState(), 2);
 		                return ActionResultType.SUCCESS;
-		            }/* else {
-						player.openContainer((ManaLiquidizerTile) tile);
-		            }*/
+		            }
 		        }
 			}
 		}
