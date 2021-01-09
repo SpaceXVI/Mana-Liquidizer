@@ -11,6 +11,7 @@ import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
@@ -22,13 +23,13 @@ public class ModFluids {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, ManaLiquidizer.MODID);
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ManaLiquidizer.MODID);
 
-	public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft:block/water_still");
-    public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft:block/water_flow");
-    public static final ResourceLocation FLUID_OVERLAY = new ResourceLocation("minecraft:block/water_overlay");
+	public static final ResourceLocation FLUID_STILL   = new ResourceLocation("minecraft:block/water_still"  ); // minecraft:block/water_still -> BotaniaAPI.MODID, "block/mana_water"
+    public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft:block/water_flow"   ); // minecraft:block/water_flow -> BotaniaAPI.MODID, "block/mana_water"
+    public static final ResourceLocation FLUID_OVERLAY = new ResourceLocation("minecraft:block/water_overlay"); // minecraft:block/water_overlay -> BotaniaAPI.MODID, "block/mana_water"
 
 	private static ForgeFlowingFluid.Properties makeProperties() {
         return new ForgeFlowingFluid.Properties(MANA_FLUID, MANA_FLUID_FLOWING,
-        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).overlay(FLUID_OVERLAY).color(0xFF1080FF))
+        	FluidAttributes.builder(FLUID_STILL, FLUID_FLOWING).sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY).overlay(FLUID_OVERLAY).color(0xFF0091CF))
             .bucket(MANA_FLUID_BUCKET).block(MANA_FLUID_BLOCK);
     }
 

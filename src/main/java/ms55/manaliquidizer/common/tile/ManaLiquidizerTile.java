@@ -10,8 +10,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import ms55.manaliquidizer.client.config.Config;
 import ms55.manaliquidizer.common.fluid.ModFluids;
+import ms55.manaliquidizer.common.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -30,6 +33,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.IManaPool;
@@ -47,7 +51,10 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
 	private Mode mode = Mode.TO_MANA_FLUID;
 
-    protected FluidTank tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 10, (fluid) -> fluid.getFluid().isEquivalentTo(ModFluids.MANA_FLUID.get()));
+    protected FluidTank tank;
+    
+    private ConfigValue<String> fluidValue;
+    private Fluid fluidActual;
 
     private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
 
@@ -55,6 +62,11 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
 	public ManaLiquidizerTile() {
 		super(ModTiles.MANA_LIQUIDIZER.get());
+
+		fluidValue = Config.MISC.FLUID;
+		fluidActual = ForgeRegistries.FLUIDS.getValue(Utils.getResourceLocation(fluidValue.get()));
+
+		tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 10, (fluid) -> fluid.getFluid().isEquivalentTo(fluidActual)); 
 	}
 
 	@Override
@@ -71,9 +83,8 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 				//5600 mana = 5600 * (3/5) = 3360 fluid
 				//This is a float only due to ints not containing decimals
 				double amount = mana * ratio;
-				System.out.println(amount);
 				if (tank.getFluid().isEmpty()) {
-					tank.setFluid(new FluidStack(ModFluids.MANA_FLUID.get().getFluid(), Math.min((int) amount, maxMana)));
+					tank.setFluid(new FluidStack(fluidActual, Math.min((int) amount, maxMana)));
 				} else {
 					tank.getFluid().setAmount(Math.min(tank.getFluidAmount() + (int) amount, maxMana));
 				}
@@ -85,7 +96,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 			if (tank.getFluidAmount() > 0 && !(mana >= maxMana)) {
 				//3360 fluid = 5600 * (5/3) = 5600 mana
 				double amount = tank.getFluid().getAmount() * ratio;
-				System.out.println(amount);
 				mana = Math.min(mana + (int) amount, maxMana);
 				//Let's say you only gained 600 mana from 1000 fluid, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
 				tank.getFluid().setAmount(Math.max(tank.getFluidAmount() - mana, 0));
@@ -266,7 +276,7 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 
 	@Override
 	public boolean isFluidValid(FluidStack stack) {
-		return stack.getFluid().isEquivalentTo(ModFluids.MANA_FLUID.get().getFluid());
+		return stack.getFluid().isEquivalentTo(fluidActual);
 	}
 
 	@Override
