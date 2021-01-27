@@ -74,9 +74,6 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		if (!ManaNetworkHandler.instance.isPoolIn(this) && !isRemoved()) {
 			ManaNetworkEvent.addPool(this);
 		}
-		
-		System.out.println(mana);
-		System.out.println(tank.getFluidAmount());
 
 		// Mana is the antecedent and Fluid is the consequent
 		// So if the ratio is 3 : 5, then 3000 mana * (3/5)
