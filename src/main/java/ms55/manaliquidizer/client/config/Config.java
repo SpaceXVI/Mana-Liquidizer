@@ -2,6 +2,7 @@ package ms55.manaliquidizer.client.config;
 
 import ms55.manaliquidizer.ManaLiquidizer;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
@@ -39,18 +40,29 @@ public class Config {
 		public final IntValue HEX_CODE;
 		public final ConfigValue<String> FLUID;
 
+		public final BooleanValue ISONEWAY;
+		public final ConfigValue<String> WAY_MODE;
+
 		public Misc(ForgeConfigSpec.Builder builder) {
 			builder.push("Misc configs")
 				.comment("Basically stuff that will mostly never get used but nice to have!");
 
 			HEX_CODE = builder
 				.comment("(DOESN'T WORK YET) Please, do NOT be a dummy while changing this, use a site to convert an 8 digit hexcode to an int, for example this (Take the decimal number) : https://www.rapidtables.com/convert/number/hex-to-decimal.html")
-				.defineInRange("manaFluidHexCode", 0xFF1080FF, Integer.MIN_VALUE, Integer.MAX_VALUE); //0xFFFFFFFF, 0x00000000);
+				.defineInRange("manaFluidHexCode", 0xFF1080FF, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 			FLUID = builder
 				.comment("Change this to change the fluid outputted from the mana liquidizer and/or needed to be inputted to make the mana")
 				.define("manaFluidReplacement", "manaliquidizer:mana_fluid");
-			
+
+			ISONEWAY = builder
+				.comment("Set this to true if you want a one way route of the mana liquidizer, i.e converting mana to fluid, but not back. Please change oneWayMode to make the route work the way you want")
+				.define("isOneWayOnly", false);
+
+			WAY_MODE = builder
+					.comment("(Requires isOneWayOnly to be true), Change this to fluidToManaOnly to allow conversion from fluid to mana ONLY, or keep it manaToFluidOnly for the opposite")
+					.define("oneWayMode", "manaToFluidOnly");
+
 			builder.pop();
 		}
 	}

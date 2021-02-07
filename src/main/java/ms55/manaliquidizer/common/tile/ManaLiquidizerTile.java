@@ -74,32 +74,44 @@ public class ManaLiquidizerTile extends TileMod implements IFluidTank, IManaPool
 		if (!ManaNetworkHandler.instance.isPoolIn(this) && !isRemoved()) {
 			ManaNetworkEvent.addPool(this);
 		}
+		
+		
 
 		// Mana is the antecedent and Fluid is the consequent
 		// So if the ratio is 3 : 5, then 3000 mana * (3/5)
 		// So fluid to mana = fluid / (5/3) = fluid * (5/3)
 		if (mode == Mode.TO_MANA_FLUID) {
 			if (mana > 0 && !(tank.getFluidAmount() >= tank.getCapacity())) {
-				//5600 mana = 5600 * (3/5) = 3360 fluid
-				//This is a float only due to ints not containing decimals
-				double amount = mana * ratio;
-				if (tank.getFluid().isEmpty()) {
-					tank.setFluid(new FluidStack(fluidActual, Math.min((int) amount, maxMana)));
+				//If the onewayroute config is true and the way mode does NOT = manatofluidonly then do nothing
+				if (Config.MISC.ISONEWAY.get() && !Config.MISC.WAY_MODE.get().equalsIgnoreCase("manaToFluidOnly")) {
+					//Do nothing
 				} else {
-					tank.getFluid().setAmount(Math.min(tank.getFluidAmount() + (int) amount, maxMana));
+					//5600 mana = 5600 * (3/5) = 3360 fluid
+					//This is a float only due to ints not containing decimals
+					double amount = mana * ratio;
+					if (tank.getFluid().isEmpty()) {
+						tank.setFluid(new FluidStack(fluidActual, Math.min((int) amount, maxMana)));
+					} else {
+						tank.getFluid().setAmount(Math.min(tank.getFluidAmount() + (int) amount, maxMana));
+					}
+					//Let's say you only gained 600 fluid from 1000 mana, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
+					mana = Math.max(mana - tank.getFluidAmount(), 0);
+					world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 				}
-				//Let's say you only gained 600 fluid from 1000 mana, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
-				mana = Math.max(mana - tank.getFluidAmount(), 0);
-				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
 			}
 		} else {
 			if (tank.getFluidAmount() > 0 && !(mana >= maxMana)) {
-				//3360 fluid = 5600 * (5/3) = 5600 mana
-				double amount = tank.getFluid().getAmount() * ratio;
-				mana = Math.min(mana + (int) amount, maxMana);
-				//Let's say you only gained 600 mana from 1000 fluid, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
-				tank.getFluid().setAmount(Math.max(tank.getFluidAmount() - mana, 0));
-				world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+				//If the onewayroute config is true and the way mode does NOT = fluidToManaOnly then do nothing
+				if (Config.MISC.ISONEWAY.get() && !Config.MISC.WAY_MODE.get().equalsIgnoreCase("fluidToManaOnly")) {
+					//Do nothing
+				} else {
+					//3360 fluid = 5600 * (5/3) = 5600 mana
+					double amount = tank.getFluid().getAmount() * ratio;
+					mana = Math.min(mana + (int) amount, maxMana);
+					//Let's say you only gained 600 mana from 1000 fluid, then if you used the amount par then 600-600 = 0, so by that you lost 400 in the process which is not a good thing
+					tank.getFluid().setAmount(Math.max(tank.getFluidAmount() - mana, 0));
+					world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+				}
 			}
 		}
 	}
