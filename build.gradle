@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '2.1.0'
+version = '2.2.0'
 group = 'ms55.manaliquidizer'
 archivesBaseName = 'manaliquidizer'
 
@@ -125,11 +125,11 @@ jar {
     manifest {
         attributes([
             "Specification-Title": "manaliquidizer",
-            "Specification-Vendor": "MostafaSabry55",
+            "Specification-Vendor": "MS55",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"MostafaSabry55",
+            "Implementation-Vendor" :"MS55",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

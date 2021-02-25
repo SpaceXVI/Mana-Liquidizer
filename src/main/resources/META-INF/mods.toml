@@ -12,7 +12,7 @@ issueTrackerURL="http://my.issue.tracker/" #TODO
     # displayURL="http://example.com/"
     logoFile="logo.png"
     credits="Vazkii for making Botania!"
-    authors="MostafaSabry55"
+    authors="MS55"
     description='''This mod allows you to exchange mana into mana fluid and vice-versa!'''
 
 [[dependencies.manaliquidizer]]
