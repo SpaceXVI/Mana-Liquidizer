@@ -1,0 +1,6 @@
+{
+  "itemGroup.manaliquidizer" : "Liquidizador de Mana",
+  "block.manaliquidizer.mana_liquidizer" : "Liquidizador de Mana",
+  "fluid.manaliquidizer.mana_fluid" : "Liquido de Mana",
+  "item.manaliquidizer.mana_fluid_bucket" : "Tacho de Liquido de Mana"
+}
