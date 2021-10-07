@@ -8,7 +8,6 @@ public class ManaTags {
 	public static final INamedTag<Fluid> MANA_FLUID = forgeTag("mana_fluid");
 
     private static INamedTag<Fluid> forgeTag(String name) {
-    	System.out.println("forge" + name);
         return FluidTags.makeWrapperTag("forge:" + name);
     }
 }

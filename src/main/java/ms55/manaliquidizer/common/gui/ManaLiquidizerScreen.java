@@ -38,8 +38,6 @@ public class ManaLiquidizerScreen extends ContainerScreen<ManaLiquidizerContaine
 
         ManaLiquidizerContainer container = this.getContainer();
 
-        System.out.println(container.getCurrentMana() + " mana");
-        System.out.println(container.getCurrentFluidMana() + " mana fluid");
 		if (container.getCurrentMana() > 0) {
 			TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(BotaniaAPI.MODID, "textures/block/mana_water.png"));
 			minecraft.getTextureManager().bindTexture(new ResourceLocation(BotaniaAPI.MODID, "textures/block/mana_water.png"));
