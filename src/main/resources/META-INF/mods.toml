@@ -1,0 +1,29 @@
+modLoader="javafml" #mandatory
+loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+
+[[mods]] #mandatory
+modId="manaliquidizer" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Mana Liquidizer" #mandatory
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+logoFile="logo.png" #optional
+credits="Vazkii for making Botania!" #optional
+authors="MS55" #optional
+#displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
+description='''This mod allows you to exchange mana into mana fluid and vice-versa!'''
+
+[[dependencies.manaliquidizer]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[43,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.manaliquidizer]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "manaliquidizer:mana_fluid",
+    "manaliquidizer:mana_fluid_flowing"
+  ]
+}
