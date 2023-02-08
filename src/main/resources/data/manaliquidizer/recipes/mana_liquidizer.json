@@ -1,0 +1,38 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "lml",
+        "tgb",
+        "lml"
+    ],
+    "key":
+    {
+        "l":
+        {
+            "item": "botania:livingrock"
+        },
+		"m":
+        {
+            "tag": "forge:ingots/manasteel"
+        },
+		"t":
+        {
+            "item": "botania:mana_tablet",
+			"data": 32767
+        },
+		"g":
+        {
+            "tag": "forge:glass"
+        },
+		"b":
+        {
+            "item": "minecraft:bucket",
+			"data": 32767
+        }
+    },
+    "result":
+    {
+        "item": "manaliquidizer:mana_liquidizer"
+    }
+}
